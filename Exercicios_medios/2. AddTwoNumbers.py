@@ -1,3 +1,4 @@
+#link do exercício: https://leetcode.com/problems/add-two-numbers/
 class Solution:
     def __init__(self, lista1: list, lista2: list):
         self.lista1 = lista1
