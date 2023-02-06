@@ -16,8 +16,6 @@ class Solution:
         if todos_iguais:
             return len(self.string[0:1])
 
-
-
         sub_strings = []
         while len(self.string) != 0:
             index_auxiliar = 1
