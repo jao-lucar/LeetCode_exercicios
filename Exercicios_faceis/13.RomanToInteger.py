@@ -1,3 +1,5 @@
+#link do exercício:
+# https://leetcode.com/problems/roman-to-integer/
 def romano(num=''):
     num = num.upper()
     arabico = 0
