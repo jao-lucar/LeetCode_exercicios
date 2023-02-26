@@ -1,54 +1,59 @@
-#link do exercicio
-#https://leetcode.com/problems/n-queens/
-
+# link do exercicio
+# https://leetcode.com/problems/n-queens/
+print('=' * 70)
+print("os '0' representam o caminho que uma rainha pode percorrer no xadrez \n"
+          "e os 'T' representam as rainhas")
+print('=' * 70)
 class Movimentos():
-    def __init__(self, numeros_rainha=4, linha=0, coluna=0):
+    def __init__(self, numeros_rainha, linha, coluna):
+
         self.tabuleiro = {0: ["-", "-", "-", "-"],
                           1: ["-", "-", "-", "-"],
                           2: ["-", "-", "-", "-"],
                           3: ["-", "-", "-", "-"]}
+
         self.numeros_rainha = numeros_rainha
         self.linha_rainha = linha
         self.coluna_rainha = coluna
+        self.rainha = "\033[31mT\033[m"
 
     def posicionarRainhas(self):
-        if self.numeros_rainha == 1:
-            self.tabuleiro[self.linha_rainha][self.coluna_rainha] = "T"
-        else:
+        self.tabuleiro[self.linha_rainha][self.coluna_rainha] = self.rainha
+        controle.movimentoHorizontal()
+        controle.movimentoVertical()
+        controle.movimentoDiagonalDireitoBaixo()
+        controle.movimentoDiagonalEsquerdoBaixo()
+        controle.movimentoDiagonalDireitoCima()
+        controle.movimentoDiagonalEsquerdoCima()
+        self.numeros_rainha -= 1
 
-            self.tabuleiro[self.linha_rainha][self.coluna_rainha] = "T"
-            controle.movimentoHorizontal()
-            controle.movimentoVertical()
-            controle.movimentoDiagonalDireitoBaixo()
-            controle.movimentoDiagonalEsquerdoBaixo()
-            controle.movimentoDiagonalDireitoCima()
-            controle.movimentoDiagonalEsquerdoCima()
+        for k, v in self.tabuleiro.items():
+            for key, value in enumerate(v):
+                if self.numeros_rainha == 0:
+                    break
 
-            for k, v in self.tabuleiro.items():
-                for key, value in enumerate(v):
-                    if self.numeros_rainha > k:
-                        if self.tabuleiro[k][key] == "-":
-                            self.tabuleiro[k][key] = "T"
+                if self.tabuleiro[k][key] == "-":
+                    self.numeros_rainha -= 1
+                    self.tabuleiro[k][key] = self.rainha
 
-                            self.linha_rainha = k
-                            self.coluna_rainha = key
-                            controle.movimentoHorizontal()
-                            controle.movimentoVertical()
-                            controle.movimentoDiagonalDireitoBaixo()
-                            controle.movimentoDiagonalEsquerdoBaixo()
-                            controle.movimentoDiagonalDireitoCima()
-                            controle.movimentoDiagonalEsquerdoCima()
-
+                    self.linha_rainha = k
+                    self.coluna_rainha = key
+                    controle.movimentoHorizontal()
+                    controle.movimentoVertical()
+                    controle.movimentoDiagonalDireitoBaixo()
+                    controle.movimentoDiagonalEsquerdoBaixo()
+                    controle.movimentoDiagonalDireitoCima()
+                    controle.movimentoDiagonalEsquerdoCima()
 
     def movimentoHorizontal(self):
 
         for k, v in enumerate(self.tabuleiro[self.linha_rainha]):
-            if v != "T":
+            if v != self.rainha:
                 self.tabuleiro[self.linha_rainha][k] = "0"
 
     def movimentoVertical(self):
         for k, v in self.tabuleiro.items():
-            if self.tabuleiro[k][self.coluna_rainha] != "T":
+            if self.tabuleiro[k][self.coluna_rainha] != self.rainha:
                 self.tabuleiro[k][self.coluna_rainha] = "0"
 
     def movimentoDiagonalDireitoBaixo(self):
@@ -98,30 +103,59 @@ class Movimentos():
         else:
             pass
 
-    def exibirTabuleiro(self):
+    def contarrainhas(self):
+        numeros_rainhas = 0
         for v in self.tabuleiro.values():
-            for x in v:
-                print(x, end="\t")
+            numeros_rainhas += v.count(self.rainha)
+        return numeros_rainhas
+
+    def exibirTabuleiro(self, tabuleiro: list):
+
+        for value in tabuleiro:
+            print("=" * 14)
+            for k, v in value.items():
+
+                for letra in v:
+                    print(letra, end="\t")
+                print()
+            print("=" * 14)
             print()
 
-    def executarTodosMovimentos(self):
+
+    def pegartabuleiro(self):
+        return self.tabuleiro
+
+def possibilidades():
+    tabuleiros = []
+    coluna = 0
+    linha = 0
+
+    numero_rainha = int(input("Quantas rainhas edseja posicionar: "))
+    if numero_rainha == 1:
+        return 1
+    while linha != 3:
+        global controle
+        controle = Movimentos(numeros_rainha=numero_rainha, linha=linha, coluna=coluna)
 
 
-        controle.movimentoHorizontal()
-        controle.movimentoVertical()
-        controle.movimentoDiagonalDireitoBaixo()
-        controle.movimentoDiagonalEsquerdoBaixo()
-        controle.movimentoDiagonalDireitoCima()
-        controle.movimentoDiagonalEsquerdoCima()
+        controle.posicionarRainhas()
+
+        if controle.contarrainhas() == numero_rainha:
+            tabuleiros.append(controle.pegartabuleiro())
+
+        coluna += 1
+        if coluna > 3:
+            coluna = 0
+            if linha != 3:
+                linha += 1
+
+    for v in tabuleiros:
+        if tabuleiros.count(v) != 1:
+            tabuleiros.remove(v)
+
+    controle.exibirTabuleiro(tabuleiro=tabuleiros)
 
 
+    return len(tabuleiros)
 
-
-linha = 1
-coluna = 0
-
-controle = Movimentos(numeros_rainha=4, linha=linha, coluna=coluna)
-controle.posicionarRainhas()
-controle.exibirTabuleiro()
-print("os '0' representam o caminho que uma rainha pode percorrer no xadrez \n"
-      "e os 'T' representam as rainhas")
+print(f"Existem {possibilidades()} possibilidades de possicionar as rainhas")
