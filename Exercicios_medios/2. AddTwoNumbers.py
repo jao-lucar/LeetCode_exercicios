@@ -22,10 +22,10 @@ class Solution:
         resultador_auxiliar = str((int(juntar_lista1.join(lista_auxiliar1)) + int(juntar_lista2.join(lista_auxiliar2))))
         for v in resultador_auxiliar:
             resultado.append(int(v))
-
+        resultado = resultado[::-1]
         return resultado
 
 
-solution = Solution([1, 2, 3], [3, 2, 1])
+solution = Solution([2, 4, 3], [5, 6, 4])
 x = solution.addTwoNumbers()
 print(x)
