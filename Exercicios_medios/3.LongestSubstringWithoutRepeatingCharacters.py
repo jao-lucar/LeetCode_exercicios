@@ -7,14 +7,11 @@ class Solution:
 
     def lengthOfLongestSubstring(self):
         todos_iguais = True
-        for v in self.string:
-            if self.string[0] == v:
-                continue
-            else:
-                todos_iguais = False
+        if self.string.count(self.string[0]) != len(self.string):
+            todos_iguais = False
 
         if todos_iguais:
-            return len(self.string[0:1])
+            return 1
 
         sub_strings = []
         while len(self.string) != 0:
@@ -34,11 +31,11 @@ class Solution:
         for v in sub_strings:
             if len(v) > maior:
                 maior = len(v)
+        sub_strings.append(maior)
+        return sub_strings
 
-        return maior
 
-
-a = 'pwwkew'
+a = 'ares'
 y = Solution(a)
 x = y.lengthOfLongestSubstring()
 print(x)
